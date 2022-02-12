@@ -1,19 +1,6 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# IP ranges
-
-# syslog "192.168.56.51"
-
-# vault "192.168.56.61"
-
-# nomad server "192.168.56.71"
-# nomad client "192.168.56.75"
-
-# consul server "192.168.56.81"
-# consul client "192.168.56.85"
-
-
 Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/focal64"
 
