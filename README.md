@@ -24,10 +24,10 @@
 
 ```
 
-UI consul emea: http://192.168.56.71:4646
+UI consul emea: http://192.168.56.71:4646 \
 UI nomad emea: http://192.168.56.71:8500
 
-UI nomad usa: http://192.168.56.72:4646
+UI nomad usa: http://192.168.56.72:4646 \
 UI consul usa: http://192.168.56.72:8500
 
 # Job run multiregion
