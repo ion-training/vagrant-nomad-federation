@@ -1,7 +1,8 @@
 name = "usa-nomad"
-datacenter = "usa-dc1"
 data_dir = "/opt/nomad"
+
 region = "usa"
+datacenter = "usa-dc1"
 
 bind_addr = "192.168.56.72"
 

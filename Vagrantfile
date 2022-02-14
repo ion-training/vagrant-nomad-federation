@@ -8,12 +8,14 @@ Vagrant.configure("2") do |config|
     emea.vm.hostname = "emea"
     emea.vm.provision "shell", path: "scripts/emea.sh"
     emea.vm.network "private_network", ip: "192.168.56.71"
+    emea.ssh.extra_args = ["-t", "cd /vagrant/examples/; bash --login"]
   end
 
   config.vm.define "usa" do |usa|
     usa.vm.hostname = "usa"
     usa.vm.provision "shell", path: "scripts/usa.sh"
     usa.vm.network "private_network", ip: "192.168.56.72"
+    usa.ssh.extra_args = ["-t", "cd /vagrant/examples/; bash --login"]
   end
 
 end
