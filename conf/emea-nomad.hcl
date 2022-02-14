@@ -1,7 +1,8 @@
 name = "emea-nomad"
-datacenter = "emea-dc1"
 data_dir = "/opt/nomad"
+
 region = "emea"
+datacenter = "emea-dc1"
 
 bind_addr = "192.168.56.71"
 

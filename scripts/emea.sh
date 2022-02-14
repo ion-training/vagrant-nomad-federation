@@ -95,3 +95,5 @@ sudo curl -fsSL https://raw.githubusercontent.com/docker/compose/1.29.2/contrib/
 # docker post installation
 usermod -aG docker nomad
 usermod -aG docker vagrant
+
+systemctl restart nomad

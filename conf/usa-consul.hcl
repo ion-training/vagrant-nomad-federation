@@ -22,3 +22,7 @@ retry_join_wan = ["192.168.56.71"]
 connect {
   enabled = true
 }
+
+ports {
+  grpc = 8502
+}
