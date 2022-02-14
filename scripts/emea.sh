@@ -23,9 +23,6 @@ chown -R nomad: /etc/nomad.d /opt/nomad/
 
 cp -ap /vagrant/conf/nomad.service /etc/systemd/system/
 
-# nomad set bash env
-cp -ap /vagrant/conf/emea-nomad-env.sh /etc/profile.d/
-
 systemctl enable nomad
 systemctl start nomad
 
@@ -56,9 +53,6 @@ chown --recursive consul:consul /etc/consul.d
 cp -ap /vagrant/conf/emea-consul.hcl /etc/consul.d/
 chown -R consul:consul /etc/consul.d/ /opt/consul/
 chmod 640 /etc/consul.d/*.hcl
-
-# consul set bash env
-cp -ap /vagrant/conf/emea-consul-env.sh /etc/profile.d/
 
 
 systemctl enable consul
@@ -97,3 +91,7 @@ usermod -aG docker nomad
 usermod -aG docker vagrant
 
 systemctl restart nomad
+
+
+# Env variables and autocompletion
+cp -ap /vagrant/conf/emea-env.sh /etc/profile.d/
