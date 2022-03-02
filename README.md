@@ -23,13 +23,20 @@
    ################################         ################################
 
 ```
+Main portal: 
+- http://192.168.56.71 or
+- http://192.168.56.72
+
 EMEA
 - nomad: http://192.168.56.71:4646 \
-- consul: http://192.168.56.71:8500
+- consul: http://192.168.56.71:8500 \ 
+- VScode: http://192.168.56.71:3000
 
 USA
 - nomad: http://192.168.56.72:4646 \
-- consul: http://192.168.56.72:8500
+- consul: http://192.168.56.72:8500 \
+- VScode: http://192.168.56.71:3000
+
 
 # How to use this repo
 Clone and cd into repo
