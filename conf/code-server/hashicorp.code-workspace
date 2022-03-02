@@ -1,0 +1,19 @@
+{
+        "folders": [
+                {
+                        "path": "/vagrant/examples"
+                },
+                {
+                        "path": "/etc/nomad.d/"
+                },
+                {
+                        "path": "/etc/consul.d"
+                }
+        ],
+    "settings": {},
+    "extensions": {
+            "recommendations": [
+                    "hashicorp.terraform"
+            ]
+    }
+}

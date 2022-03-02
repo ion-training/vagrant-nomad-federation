@@ -1,0 +1,8 @@
+{
+    "workbench.colorTheme": "Visual Studio Dark",
+    "editor.fontSize": 14,
+    "files.associations": {
+        "*.nomad": "terraform",
+        "*.hcl": "terraform"
+    }
+}

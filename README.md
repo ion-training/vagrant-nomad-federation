@@ -31,6 +31,38 @@ USA
 - nomad: http://192.168.56.72:4646 \
 - consul: http://192.168.56.72:8500
 
+# How to use this repo
+Clone and cd into repo
+```
+git clone git@github.com:ion-training/vagrant-nomad-federation.git
+```
+```
+cd vagrant-nomad-federation
+```
+
+Create lic/nomad.hclic and place license in it
+```
+touch lic/nomad.hclic
+```
+
+Create the lab
+```
+vagrant up
+```
+
+SSH into vm
+```
+vagrant ssh emea
+```
+```
+vagrant ssh usa
+```
+
+Optional. SSH config for vscode remote explorer
+```
+vagrant ssh-config
+```
+
 # Job run multiregion
 In the /vagrant/examples directory
 ```
@@ -94,39 +126,6 @@ nomad job status -region emea redis-multi-region
 ```
 ```
 nomad job status -region usa redis-multi-region
-```
-
-
-# How to use this repo
-Clone and cd into repo
-```
-git clone git@github.com:ion-training/vagrant-nomad-federation.git
-```
-```
-cd vagrant-nomad-federation
-```
-
-Create lic/nomad.hclic and place license in it
-```
-touch lic/nomad.hclic
-```
-
-Create the lab
-```
-vagrant up
-```
-
-SSH into vm
-```
-vagrant ssh emea
-```
-```
-vagrant ssh usa
-```
-
-Optional. SSH config for vscode remote explorer
-```
-vagrant ssh-config
 ```
 
 # Sample output

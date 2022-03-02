@@ -1,6 +1,6 @@
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
-apt-get install -y zip unzip
+apt-get install -y zip unzip nginx
 
 # install nomad ENTERPRISE manually
 export NOMAD_VERSION="1.2.6"
@@ -95,3 +95,21 @@ systemctl restart nomad
 
 # Env variables and autocompletion
 cp -ap /vagrant/conf/emea-env.sh /etc/profile.d/
+
+
+# nginx
+rm /var/www/html/index.nginx-debian.html
+cp /vagrant/conf/nginx/index.html /var/www/html/
+systemctl restart nginx
+
+# code-server
+curl -fsSL https://code-server.dev/install.sh | sh
+cp /vagrant/conf/code-server.service /etc/systemd/system/             # copy systemd service
+cp -R /vagrant/conf/code-server /home/vagrant/                        # copy code-server config
+
+# code-server terraform extention
+code-server --install-extension hashicorp.terraform --force --extensions-dir /home/vagrant/code-server/extensions
+
+# code-server is service
+systemctl enable code-server
+systemctl start code-server
