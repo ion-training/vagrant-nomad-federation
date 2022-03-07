@@ -3,13 +3,14 @@ apt-get update
 apt-get install -y zip unzip nginx
 
 # install nomad ENTERPRISE manually
+pushd /var/tmp
 export NOMAD_VERSION="1.2.6"
 curl -fsSL https://releases.hashicorp.com/nomad/${NOMAD_VERSION}+ent/nomad_${NOMAD_VERSION}+ent_linux_amd64.zip -o nomad.zip
 # curl -fsSL https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_amd64.zip -o nomad.zip
 unzip nomad.zip
 sudo useradd --system --home /etc/nomad.d --shell /bin/false nomad
 chown root:root nomad
-mv nomad /usr/bin/
+mv nomad /usr/local/bin/
 
 # create directories
 mkdir -p /opt/nomad
@@ -39,7 +40,7 @@ curl -fsSL https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONS
 unzip consul.zip
 useradd --system --home /etc/consul.d --shell /bin/false consul
 chown root:root consul
-mv consul /usr/bin/
+mv consul /usr/local/bin/
 
 # copy service config
 cp -ap /vagrant/conf/consul.service /etc/systemd/system/consul.service
