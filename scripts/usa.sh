@@ -10,7 +10,7 @@ curl -fsSL https://releases.hashicorp.com/nomad/${NOMAD_VERSION}+ent/nomad_${NOM
 unzip nomad.zip
 sudo useradd --system --home /etc/nomad.d --shell /bin/false nomad
 chown root:root nomad
-mv nomad /usr/local/bin/
+mv nomad /usr/bin/
 
 # create directories
 mkdir -p /opt/nomad
@@ -35,13 +35,13 @@ sudo cp `func-e which` /usr/local/bin
 
 
 # CONSUL OSS or ENTERPRISE manually
-export CONSUL_VERSION="1.11.2"
+export CONSUL_VERSION="1.11.4"
 curl -fsSL https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_linux_amd64.zip -o consul.zip
 # curl -fsSL https://releases.hashicorp.com/consul/${CONSUL_VERSION}+ent/consul_${CONSUL_VERSION}+ent_linux_amd64.zip -o consul.zip
 unzip consul.zip
 useradd --system --home /etc/consul.d --shell /bin/false consul
 chown root:root consul
-mv consul /usr/local/bin/
+mv consul /usr/bin/
 
 # copy service config
 cp -ap /vagrant/conf/consul.service /etc/systemd/system/consul.service
