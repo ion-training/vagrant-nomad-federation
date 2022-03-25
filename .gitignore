@@ -16,3 +16,4 @@
 # Ignore licenses .lic or .hclic
 *.lic
 *.hclic
+examples/.DS_Store
