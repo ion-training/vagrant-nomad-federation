@@ -69,14 +69,32 @@ Optional. SSH config for vscode remote explorer
 ```
 vagrant ssh-config
 ```
+# Confirm federation
+```
+nomad server members
+```
+```
+consul members -wan
+```
+# Federation confirmation output
+```
+vagrant@emea:/vagrant/examples$ nomad server members
+Name             Address        Port  Status  Leader  Protocol  Build      Datacenter  Region
+emea-nomad.emea  192.168.56.71  4648  alive   true    2         1.2.6+ent  emea-dc1    emea
+usa-nomad.usa    192.168.56.72  4648  alive   true    2         1.2.6+ent  usa-dc1     usa
 
+vagrant@emea:/vagrant/examples$ consul members -wan
+Node              Address             Status  Type    Build   Protocol  DC    Partition  Segment
+emea-consul.emea  192.168.56.71:8302  alive   server  1.11.4  2         emea  default    <all>
+usa-consul.usa    192.168.56.72:8302  alive   server  1.11.4  2         usa   default    <all>
+```
 # Job run multiregion
-In the /vagrant/examples directory
+In the /vagrant/examples directory:
 ```
 nomad job run redis-multi-region.nomad
 ```
 
-redis-multi-region.nomad
+redis-multi-region.nomad:
 ```
 job "redis-multi-region" {
 
@@ -121,7 +139,7 @@ job "redis-multi-region" {
 }
 ```
 
-# Job status per region
+# Multiregion job status per region
 ```
 nomad job status -region emea 
 ```
@@ -135,7 +153,7 @@ nomad job status -region emea redis-multi-region
 nomad job status -region usa redis-multi-region
 ```
 
-# Sample output
+# Multiregion sample output
 ```
 pc-workstation$ vagrant ssh emea
 vagrant@emea:/vagrant/examples$ nomad job run redis-multi-region.nomad 
@@ -229,4 +247,108 @@ Node              Address             Status  Type    Build   Protocol  DC    Pa
 emea-consul.emea  192.168.56.71:8302  alive   server  1.11.2  2         emea  default    <all>
 usa-consul.usa    192.168.56.72:8302  alive   server  1.11.2  2         usa   default    <all>
 vagrant@emea:/vagrant/examples$ 
+```
+# Job run client2-svc2
+This job will create a Consul service called `client2-svc2` with tags `["${NOMAD_ALLOC_INDEX}", "${NOMAD_ALLOC_ID}"]`.  The purpose of this Consul service in a Docker container is to test DNS communication.
+
+In the /vagrant/examples directory:
+```
+nomad job run client2-svc2.nomad
+```
+client2-svc2.nomad:
+```
+job "client2-svc2" {
+  datacenters = ["emea-dc1"]
+
+  group "svc2" {
+    network {
+      port "test" {
+        to = 9090
+      }
+    }
+
+    service {
+      name = "client2-svc2"
+      tags = ["${NOMAD_ALLOC_INDEX}", "${NOMAD_ALLOC_ID}"]
+      port = 9090
+      
+    }
+
+    task "svc2" {
+      driver = "docker"
+
+      config {
+        image = "nicholasjackson/fake-service:v0.7.8"
+      }
+
+      env {
+        MESSAGE = "hello from svc2 in DC ${ datacenter }"
+      }
+
+      resources {
+        cpu    = 100
+        memory = 100
+      }
+    }
+  }
+}
+```
+# Client2-svc2 Job status & DNS test
+```
+nomad job status -region emea client2-svc2
+```
+```
+dig @127.0.0.1 -p 8600 0.client2-svc2.service.emea.consul
+```
+# Client2-svc2 sample output
+```
+vagrant@usa:/vagrant/examples$ nomad job status -region emea client2-svc2
+ID            = client2-svc2
+Name          = client2-svc2
+Submit Date   = 2022-03-25T21:30:40Z
+Type          = service
+Priority      = 50
+Datacenters   = emea-dc1
+Namespace     = default
+Status        = running
+Periodic      = false
+Parameterized = false
+
+Summary
+Task Group  Queued  Starting  Running  Failed  Complete  Lost
+svc2        0       0         1        0       0         0
+
+Latest Deployment
+ID          = 758a09e3
+Status      = successful
+Description = Deployment completed successfully
+
+Deployed
+Task Group  Desired  Placed  Healthy  Unhealthy  Progress Deadline
+svc2        1        1       1        0          2022-03-25T21:40:55Z
+
+Allocations
+ID        Node ID   Task Group  Version  Desired  Status   Created    Modified
+5615483a  341429cd  svc2        0        run      running  5m25s ago  5m9s ago
+
+vagrant@usa:/vagrant/examples$ dig @127.0.0.1 -p 8600 0.client2-svc2.service.emea.consul
+
+; <<>> DiG 9.16.1-Ubuntu <<>> @127.0.0.1 -p 8600 0.client2-svc2.service.emea.consul
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 41739
+;; flags: qr aa rd; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+;; WARNING: recursion requested but not available
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;0.client2-svc2.service.emea.consul. IN	A
+
+;; ANSWER SECTION:
+0.client2-svc2.service.emea.consul. 0 IN A	192.168.56.71
+
+;; Query time: 8 msec
+
 ```
